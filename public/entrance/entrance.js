@@ -22,7 +22,7 @@ function createLobby() {
         body: JSON.stringify(data)
     }
 
-    fetch('/tolobby',options);
+    fetch('/createlobby',options);
  
     
 }
