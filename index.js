@@ -36,7 +36,7 @@ function enterLobby(_lobbyId, _user) {
 
 let lobbies = [
     {
-        lobbyId: "xyz678",
+        lobbyId: "abc123",
         users: []
     },
     {
@@ -44,8 +44,6 @@ let lobbies = [
         users: []
     }
 ];
-console.log("---girerken lobbies---");
-console.log(lobbies);
 // setInterval(heartbeat, 1000);
 // function heartbeat() {
 
@@ -68,10 +66,9 @@ io.on('connection', socket => {
     let lobbyId;
     let id;
 
-    
-    socket.on('isRoomExist',data=>{
-        console.log("geldi");
-        socket.emit('resRoomExist',data);
+
+    socket.on('isRoomExist', data => {
+        socket.emit('resRoomExist', data);
     })
     socket.on('createLobby', data => {
         let user = {
@@ -92,18 +89,28 @@ io.on('connection', socket => {
         //enterLobby("abc123","supo")
         isLobbyExist = lobbies.some(x => x.lobbyId == data.lobbyId)
         if (isLobbyExist) {
-            enterLobby(data.lobbyId, data.id);
 
+            let responseMessage = {
+                message: "You are going to lobby",
+                code: 200,
+            }
+
+            socket.emit('response', responseMessage);
+            lobbyId = data.lobbyId
+            enterLobby(data.lobbyId, data.id);
         }
         else {
-            socket.emit('alert', "lobby doesn`t exist. create lobby first");
+            let responseMessage = {
+                message: "lobby doesn`t exist. create lobby first",
+                code: 405,
+            }
+            socket.emit('response', responseMessage);
         }
-        console.log("lobi");
-        console.log(lobbies);
+ 
     })
 
 
     socket.join(lobbyId);
-
-    io.to(lobbyId).emit('hi', lobby.lobbyId);
+    let lobbyUsers = lobbies.find(x => x.lobbyId == "abc123")
+    io.to(lobbyId).emit('getUsersInLobby', lobbyUsers);
 })

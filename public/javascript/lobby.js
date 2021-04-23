@@ -1,4 +1,6 @@
-let room1 = []
+
+let users = []
+let lobbyName = "";
 socket.on('showLobbyPlayers', data => {
     console.log(data);
     console.log("any");
@@ -12,37 +14,36 @@ input.addEventListener("keyup", function (event) {
     }
 });
 
-socket.on('getUsersInLobby', users=>{
-    console.log("hi");
-    console.log(users);
+socket.on('getUsersInLobby', data=>{
+    users = data.users
+    lobbyId =  data.lobbyId
+    parseHTML();
 })
 
-// socket.on('heartbeat', data => {
-//     room1 = data;
-//     //index 1 tbody 
-//     let c = document.getElementsByTagName("tbody")[1]
-//     c.innerHTML = ""
-//     let counter = 1;
-//     room1.forEach((element, i) => {
-//         //create null elements
-//         let newtrelement = document.createElement("tr");
-//         let newtrlielement1 = document.createElement("td");
-//         let newtrlielement2 = document.createElement("td");
-//         let newtrlielement3 = document.createElement("td");
-//         let newtrlielement4 = document.createElement("td");
-//         //make nested
-//         newtrelement.appendChild(newtrlielement1)
-//         newtrelement.appendChild(newtrlielement2)
-//         newtrelement.appendChild(newtrlielement3)
-//         newtrelement.appendChild(newtrlielement4)
-//         //fill data
-//         newtrelement.children[0].innerHTML = i;
-//         newtrelement.children[1].innerHTML = element.id;
-//         newtrelement.children[2].innerHTML = element.lobbyId;
-//         newtrelement.children[3].innerHTML = "komik mi saat 7";
+function parseHTML() {
+    let c = document.getElementsByTagName("tbody")[1]
+    c.innerHTML = "";
+    let counter = 1;
+    users.forEach((element, i) => {
+        //create null elements
+        let newtrelement = document.createElement("tr");
+        let newtrlielement1 = document.createElement("td");
+        let newtrlielement2 = document.createElement("td");
+        let newtrlielement3 = document.createElement("td");
+        let newtrlielement4 = document.createElement("td");
+        //make nested
+        newtrelement.appendChild(newtrlielement1)
+        newtrelement.appendChild(newtrlielement2)
+        newtrelement.appendChild(newtrlielement3)
+        newtrelement.appendChild(newtrlielement4)
+        //fill data
+        newtrelement.children[0].innerHTML = i;
+        newtrelement.children[1].innerHTML = element;
+        newtrelement.children[2].innerHTML = "selamlar cümlesi";
+        newtrelement.children[3].innerHTML = "komik mi saat 7";
 
-//         c.appendChild(newtrelement);
-//     });
-// });
+        c.appendChild(newtrelement);
+    });
+};
 
 
