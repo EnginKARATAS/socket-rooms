@@ -1,0 +1,7 @@
+#elementsDiv{
+    background-image: url(../images/entrance-background.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    object-fit: contain; 
+}

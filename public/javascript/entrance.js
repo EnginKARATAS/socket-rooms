@@ -1,9 +1,10 @@
 //	Event Listener
-let element = document.getElementById("btn_create");
-element.addEventListener("click",  createLobby);
+ 
+    let element = document.getElementById("btn_create").addEventListener('click',createLobby)
 
+function createLobby() {
+    console.log("object");
 
-function createLobby() { 
     let username = document.getElementById("username").value;
     console.log("createLobby is called. username is:" + username);
 
@@ -17,12 +18,12 @@ function createLobby() {
     const options = {
         method: 'POST',
         headers: {
-        'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(data)
     }
 
-    fetch('/createlobby',options);
- 
-    
+    fetch('/createlobby', options);
+
+
 }

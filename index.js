@@ -18,9 +18,10 @@ nunjucks.configure('public', {
     express: app
 })
 let path = __dirname + '\\public';
+let entrance = '\\pages\\entrance\\index.html';
 
 app.get('/', function (req, res) {
-    res.render(path + '\\entrance\\entrance.html', {bilgi:"selam"});
+    res.render(path + entrance , {bilgi:"selam"});
 });
 
 app.post('createlobby', (req, res) => {
