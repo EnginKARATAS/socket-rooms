@@ -5,40 +5,76 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
     <script src="/socket.io/socket.io.js"></script>
 
-    <title>Document</title>
+    <title>Game Lobby</title>
 </head>
 
-<body>
-    <table class="table table-dark">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Username</th>
-                <th scope="col">Room</th>
-                <th scope="col">About</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for data in room1 %}
-            <tr>
-                <th scope="row">1</th>
-                <td>{{ data.id }}</td>
-                <td>{{ data.lobbyId }}</td>
-                <td>çılgın biri</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<body class="bg-light">
+    <div class=" header d-flex justify-content-center   ">
+        <a href="https://www.github.com/enginkaratas">&emsp;&emsp;&emsp;github</a>
+        <a href="mailto:contact@enginkaratas.com">&emsp;mail</a>
+        <a href="https://www.linkedin.com/in/engin-karata%C5%9F-060807171/">&emsp;about</a>
+    </div>
+    <div class="row ">
+        <div class="col-md-4 h6">
+            <table class="table table-info">
+                <thead>
+                    <tr>
+                        <th scope="col">Username</th>
+                        <th scope="col">Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="user_data">
+                        <td>{{ data.id }}</td>
+                        <td>mesaj gözükür.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="col-md-12 bg-success p-2 rounded">
+                
+                <div class="input-group ">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Mesaj</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                  </div>
+            </div>
+
+        </div>
+        <div class="col-md-8 ">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Room</th>
+                        <th scope="col">About</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="user_data">
+                        <th scope="row">1</th>
+                        <td>{{ data.id }}</td>
+                        <td>{{ data.lobbyId }}</td>
+                        <td>çılgın biri</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 
 </body>
 <script>
     var socket = io();
 </script>
 <script src="../../javascript/lobby.js"></script>
+<link rel="stylesheet" href="../../css/lobby.css">
+
 
 </html>

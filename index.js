@@ -21,11 +21,19 @@ let path = __dirname + '\\public';
 let entrance = '\\pages\\entrance\\index.html';
 let lobby =    '\\pages\\lobby\\index.html';
 
-let room1 = [];
+let data2 = {
+    id:"engin but fake data",
+    lobbyId:"abc123"
+}
+let data = {
+    id:"engin",
+    lobbyId:"abc123"
+}
+let room1 = [data,data2];
 
-setInterval(heartBeat,500);
-function heartBeat() {
-    io.sockets.emit(room1);
+setInterval(heartbeat,1000);
+function heartbeat() {
+    io.sockets.emit('heartbeat',room1);
 }
 
 app.get('/', function (req, res) {

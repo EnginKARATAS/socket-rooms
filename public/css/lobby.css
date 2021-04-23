@@ -1,0 +1,14 @@
+a {
+    text-decoration: blink;
+    color: darkred;
+    font-family: cursive;
+    font-size: 1.5rem;    
+  }
+  /* header{
+      background-color: #333;
+  } */
+  
+  body {
+    padding: 0;
+    margin: 0;  
+  }
