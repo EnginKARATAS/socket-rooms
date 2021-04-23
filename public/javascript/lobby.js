@@ -12,6 +12,11 @@ input.addEventListener("keyup", function (event) {
     }
 });
 
+socket.on('hi',lobby1=>{
+    console.log("hi");
+    console.log(lobby1);
+})
+
 socket.on('heartbeat', data => {
     room1 = data;
     //index 1 tbody 

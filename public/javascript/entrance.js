@@ -21,18 +21,6 @@ function createLobby() {
         id: username
     }
 
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    }
-
-    fetch('/createlobby', options);
+    socket.emit('createLobby', data);
     window.location.href = "/lobby";
-
-
-
-
 }

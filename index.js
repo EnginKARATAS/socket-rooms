@@ -19,52 +19,81 @@ nunjucks.configure('public', {
 })
 let path = __dirname + '\\public';
 let entrance = '\\pages\\entrance\\index.html';
-let lobby =    '\\pages\\lobby\\index.html';
+let lobby = '\\pages\\lobby\\index.html';
 
-let data2 = {
-    id:"engin but fake data",
-    lobbyId:"abc123"
+let user1 = {
+    id: "elif",
+    username: "elif",
 }
-let data = {
-    id:"engin",
-    lobbyId:"abc123"
+let user2 = {
+    id: "engin",
+    username: "engin"
 }
-let room1 = [data,data2];
+function enterLobby(_lobbyId, _user) {
+    let lobbyUsers = lobbies.find(x => x.lobbyId = _lobbyId).users
+    lobbyUsers.push(_user);
+}
 
-setInterval(heartbeat,1000);
-function heartbeat() {
-    io.sockets.emit('heartbeat',room1);
-}
+let lobbies = [
+    {
+        lobbyId: "abc123",
+        users: []
+    },
+    {
+        lobbyId: "efg456",
+        users: []
+    }
+];
+console.log(lobbies);
+// setInterval(heartbeat, 1000);
+// function heartbeat() {
+
+//     io.sockets.emit('heartbeat', lobby);
+// }
 
 app.get('/', function (req, res) {
-    res.render(path + entrance , {bilgi:"selam"});
+    res.render(path + entrance, { bilgi: "selam" });
 });
 
 app.get('/lobby', function (req, res) {
-    
-    res.render(path+lobby,{room1});
+
+    res.render(path + lobby, { lobby });
 });
 
-app.post('/createlobby', (req, res) => {
-    let data = {
-        id: req.body.id,
-        lobbyId: req.body.lobbyId
-    };
-    room1.push(data); 
-    console.log(room1);   
-    // socket.join(data.lobbyId);
-    console.log(room1);;
-});
 
-io.on('connection',socket=>{
-    socket.on('getLobbyUsers',()=>{
-        console.log("al sana");
+
+io.on('connection', socket => {
+
+    let lobbyId;
+    let id;
+
+    socket.on('createLobby', data => {
+        let user = {
+            id: data.id,
+            username: data.
+        }
+        let lobby = 
+        {
+                lobbyId: data.lobbyId,
+                users: []
+        }
+
+     
+
+        
+     })
+
+    socket.on("joinLobby", data => {
+        console.log(data);
+        //enterLobby("abc123","supo")
+        enterLobby(data.lobbyId,data.id);
+        console.log("lobi");
+        console.log(lobbies);
+
     })
-    socket.on("joinLobby",data=>{
-        console.log("room1");
-        console.log(room1);
-        room1.push(data);
-        // socket.join(data.roomId)
-        socket.emit('showLobbyPlayers',data);
-    })
+
+
+    socket.join(lobbyId);
+
+    io.to(lobbyId).emit('hi', lobby.lobbyId);
 })
