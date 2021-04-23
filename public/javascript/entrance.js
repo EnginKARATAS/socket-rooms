@@ -13,12 +13,8 @@ function joinLobby() {
 
 }
 function createLobby() {
-    console.log("object");
-
-    let username = document.getElementById("username").value;
-    console.log("createLobby is called. username is:" + username);
-
-    //generating unique room namespace string
+    let username = document.getElementById("txt_username").value;
+    // let lobbyId = document.getElementById("txt_username").value;
 
     let data = {
         lobbyId: "abc123",

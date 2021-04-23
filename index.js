@@ -56,7 +56,6 @@ app.post('/createlobby', (req, res) => {
     console.log(room1);;
 });
 
-
 io.on('connection',socket=>{
     socket.on('getLobbyUsers',()=>{
         console.log("al sana");
