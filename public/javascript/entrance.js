@@ -1,16 +1,14 @@
-//	Event Listener
-
- let element = document.getElementById("btn_create").addEventListener('click', createLobby)
+let element = document.getElementById("btn_create").addEventListener('click', createLobby)
 
 let element2 = document.getElementById("btn_join").addEventListener('click', joinLobby)
 
 function joinLobby() {
-    let username = document.getElementById("username").value;
+    let username = document.getElementById("txt_username").value;
     let data = {
         id: username,
         lobbyId: "abc123"
     }
-    socket.emit('joinLobby',data)
+    socket.emit('joinLobby', data)
     window.location.href = "/lobby";
 
 }

@@ -4,9 +4,18 @@ socket.on('showLobbyPlayers', data => {
     console.log("any");
 });
 
+var input = document.getElementById("txt_message");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   alert("enter click")
+//    document.getElementById("myBtn").click();
+  }
+});
+
 socket.on('heartbeat', data => {
     room1 = data;
-    let c = document.getElementsByTagName("tbody")[0]
+    let c = document.getElementsByTagName("tbody")[1]
         c.innerHTML = ""
         let counter = 1;
     room1.forEach((element,i) => {
@@ -27,8 +36,6 @@ socket.on('heartbeat', data => {
         newtrelement.children[2].innerHTML = element.lobbyId;
         newtrelement.children[3].innerHTML = "komik mi saat 7";
         
-        let text_area = document.getElementById("text_area")
-        text_area.attributes.rows.value = (1.9*++counter);
         c.appendChild(newtrelement);
 
     });
