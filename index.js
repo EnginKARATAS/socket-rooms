@@ -19,21 +19,45 @@ nunjucks.configure('public', {
 })
 let path = __dirname + '\\public';
 let entrance = '\\pages\\entrance\\index.html';
+let lobby =    '\\pages\\lobby\\index.html';
+
+let room1 = [];
+
+setInterval(heartBeat,500);
+function heartBeat() {
+    io.sockets.emit(room1);
+}
 
 app.get('/', function (req, res) {
     res.render(path + entrance , {bilgi:"selam"});
 });
 
-app.post('createlobby', (req, res) => {
-    let data = req.body;
-    console.log(data);
-    res.sendFile("../", data)
+app.get('/lobby', function (req, res) {
+    
+    res.render(path+lobby,{room1});
 });
 
-io.on('connection', socket => {
+app.post('/createlobby', (req, res) => {
+    let data = {
+        id: req.body.id,
+        lobbyId: req.body.lobbyId
+    };
+    room1.push(data); 
+    console.log(room1);   
+    // socket.join(data.lobbyId);
+    console.log(room1);;
+});
 
-    socket.on('createLobby', data => {
-        socket.join(data.lobbyId);
-    });
 
+io.on('connection',socket=>{
+    socket.on('getLobbyUsers',()=>{
+        console.log("al sana");
+    })
+    socket.on("joinLobby",data=>{
+        console.log("room1");
+        console.log(room1);
+        room1.push(data);
+        // socket.join(data.roomId)
+        socket.emit('showLobbyPlayers',data);
+    })
 })

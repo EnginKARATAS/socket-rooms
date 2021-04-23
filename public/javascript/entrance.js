@@ -1,7 +1,19 @@
 //	Event Listener
- 
-    let element = document.getElementById("btn_create").addEventListener('click',createLobby)
 
+ let element = document.getElementById("btn_create").addEventListener('click', createLobby)
+
+let element2 = document.getElementById("btn_join").addEventListener('click', joinLobby)
+
+function joinLobby() {
+    console.log("dqwdqwd");
+    let data = {
+        id: username,
+        lobbyId: "abc123"
+    }
+    socket.emit('joinLobby',{data})
+    window.location.href = "/lobby";
+
+}
 function createLobby() {
     console.log("object");
 
@@ -24,6 +36,9 @@ function createLobby() {
     }
 
     fetch('/createlobby', options);
+    window.location.href = "/lobby";
+
+
 
 
 }

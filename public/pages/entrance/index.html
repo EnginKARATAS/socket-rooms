@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="/socket.io/socket.io.js"></script>
+
   <link rel="stylesheet" href="../../css/entrance.css">
 
 </head>
@@ -31,7 +33,7 @@
 
         </div>
         <div type="button" class="col-md-6 d-flex justify-content-end">
-          <input class="btn btn-light" id="btn_join" value="Join"><br>
+          <input type="button" class="btn btn-light" id="btn_join" value="Join"> 
 
         </div>
       </div>
@@ -40,6 +42,9 @@
   </div>
 
 </body>
+<script>
+  var socket = io();
+</script>
 <script  type="text/javascript" src="../../javascript/entrance.js"></script>
 
 </html>
