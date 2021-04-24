@@ -1,3 +1,4 @@
+const { text } = require('express');
 const express = require('express');
 const app = express(); //listining right now
 const nunjucks = require('nunjucks');
@@ -60,10 +61,28 @@ app.get('/lobby', function (req, res) {
 });
 
 
+function isOnlyAlphabetic(text) {
+    return /^[A-Z]+$/i.test(text)
+}
+//test is my duty //true
+function isSpace(text) {
+    return !(/ /i.test(text))
+}
+
+
 
 io.on('connection', socket => {
 
 
+    //*****************Sent response************** */
+    //object, Number
+    let responseMessage = function (message, code) {
+        this.responseMessage = {
+            message: message,
+            code: code,
+        }
+        socket.emit('response', this.responseMessage);
+    }
 
     //*****************Room Join*************** */
     let lobbyId;
@@ -73,7 +92,19 @@ io.on('connection', socket => {
     socket.on('isRoomExist', data => {
         socket.emit('resRoomExist', data);
     })
+
+
     socket.on('createLobby', data => {
+        let username = data.id;
+        console.log(isOnlyAlphabetic(username) + " " + isSpace(username));
+        if (isOnlyAlphabetic(username) && isSpace(username)) {
+            responseMessage("you create a room",200)
+        }
+
+        else{
+            responseMessage("Username can only contain letters \nUsername can not contain space", 406)
+        }
+
         let user = {
             id: data.id,
             username: data.lobbyId
@@ -92,26 +123,17 @@ io.on('connection', socket => {
         //enterLobby("abc123","supo")
         isLobbyExist = lobbies.some(x => x.lobbyId == data.lobbyId)
         if (isLobbyExist) {
-
-            let responseMessage = {
-                message: "You are going to lobby",
-                code: 200,
-            }
+            responseMessage("You going to lobby", 200)
 
             socket.emit('response', responseMessage);
             lobbyId = data.lobbyId
             enterLobby(data.lobbyId, data.id);
         }
         else {
-            let responseMessage = {
-                message: "lobby doesn`t exist. create lobby first",
-                code: 405,
-            }
-            socket.emit('response', responseMessage);
+            responseMessage("lobby doesn`t exist. create lobby first", 405)
         }
- 
-    })
 
+    })
 
     socket.join(lobbyId);
     let lobbyUsers = lobbies.find(x => x.lobbyId == "abc123")

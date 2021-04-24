@@ -11,14 +11,16 @@ socket.on('resJoinLobby', bool => {
 
 socket.on('response', (responseData) => {
     console.log(responseData);
-    if (responseData.code > 400) {
-        alert(responseData.message);
+    let code = responseData.code;
+    let message = responseData.message
+    if (code == 405 || code == 406) {
+        alert(message);
     }
-    else if(responseData.code < 300)
-    {
-        alert(responseData.message);
+    else if (code == 200) {
+        alert(message)
         window.location.href = "/lobby";
     }
+
 })
 
 function joinLobby() {
@@ -34,11 +36,9 @@ function createLobby() {
     let username = document.getElementById("txt_username").value;
     let lobbyId = document.getElementById("txt_username").value;
 
-    let data = {
+    let user = {
         id: username,
         lobbyId: lobbyId
     }
-
-    socket.emit('createLobby', data);
-    window.location.href = "/lobby";
+    socket.emit('createLobby', user);
 }

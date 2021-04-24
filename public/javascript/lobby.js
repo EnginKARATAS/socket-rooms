@@ -21,11 +21,10 @@ socket.on('getUsersInLobby', data => {
 })
 
 function parseHTML() {
-    let c = document.getElementsByTagName("tbody")[1]
+    let c = document.getElementById("user_table");
     let dom_lobbyId = document.getElementById("lobbyId");
     dom_lobbyId.innerText = lobbyId;
     c.innerHTML = "";
-    let counter = 1;
     users.forEach((element, i) => {
         //create null elements
         let newtrelement = document.createElement("tr");
@@ -33,7 +32,7 @@ function parseHTML() {
         let newtrlielement2 = document.createElement("td");
         let newtrlielement3 = document.createElement("td");
         let newtrlielement4 = document.createElement("td");
-        //make nested
+        //newtrelement>newtrlielement4
         newtrelement.appendChild(newtrlielement1)
         newtrelement.appendChild(newtrlielement2)
         newtrelement.appendChild(newtrlielement3)
