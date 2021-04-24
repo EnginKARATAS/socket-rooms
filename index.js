@@ -63,6 +63,9 @@ app.get('/lobby', function (req, res) {
 
 io.on('connection', socket => {
 
+
+
+    //*****************Room Join*************** */
     let lobbyId;
     let id;
 
@@ -113,4 +116,6 @@ io.on('connection', socket => {
     socket.join(lobbyId);
     let lobbyUsers = lobbies.find(x => x.lobbyId == "abc123")
     io.to(lobbyId).emit('getUsersInLobby', lobbyUsers);
+    //***************************************** */
+
 })

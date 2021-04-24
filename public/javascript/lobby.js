@@ -1,6 +1,6 @@
 
 let users = []
-let lobbyName = "";
+let lobbyId = "";
 socket.on('showLobbyPlayers', data => {
     console.log(data);
     console.log("any");
@@ -14,14 +14,16 @@ input.addEventListener("keyup", function (event) {
     }
 });
 
-socket.on('getUsersInLobby', data=>{
+socket.on('getUsersInLobby', data => {
     users = data.users
-    lobbyId =  data.lobbyId
+    lobbyId = data.lobbyId
     parseHTML();
 })
 
 function parseHTML() {
     let c = document.getElementsByTagName("tbody")[1]
+    let dom_lobbyId = document.getElementById("lobbyId");
+    dom_lobbyId.innerText = lobbyId;
     c.innerHTML = "";
     let counter = 1;
     users.forEach((element, i) => {
