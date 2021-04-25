@@ -19,24 +19,48 @@
     <div class="row justify-content-center align-self-center">
       <div class="row d-flex justify-content-center">
 
+        <div class="col-md-4">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="text" class="form-control bg-dark" id="txt_create_username" placeholder="Username" aria-label="Username"
+              aria-describedby="basic-addon1">
+            <input type="text" class="form-control bg-dark" id="txt_create_lobby" placeholder="Lobby Id">
+          </div>
+  
+          <div class="d-flex justify-content-center">
+            <div class="row">
+              <input type="button" class="btn btn-dark" id="btn_create" value="Create">
+            </div>
+          </div> 
+
+        </div>
         <div class="col-md-8 ">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">@</span>
             </div>
-            <input type="text" class="form-control" id="txt_username" placeholder="Username" aria-label="Username"
+            <input type="text" class="form-control" id="txt_join_username" placeholder="Username" aria-label="Username"
               aria-describedby="basic-addon1">
-            <input type="text" class="form-control bg-dark" id="txt_lobby" placeholder="Lobby Id"  >
+            <input type="text" class="form-control bg-light" id="txt_join_lobby" placeholder="Lobby Id">
           </div>
 
+          <div class="d-flex justify-content-center">
+            <div class="row">
+              <input type="button" class="btn btn-light" id="btn_join" value="Join">
+            </div>
+          </div> 
+
         </div>
-        <div class="col-md-12 d-flex justify-content-center">
-          <input type="button" class="btn btn-dark b" id="btn_create" value="Create">
-          <input type="button" class="btn btn-light " id="btn_join" value="Join">
-        </div>
+
+       
+ 
       </div>
-      <!-- {{bilgi}} -->
+ 
     </div>
+    <!-- {{bilgi}} -->
+  </div>
   </div>
 
 </body>

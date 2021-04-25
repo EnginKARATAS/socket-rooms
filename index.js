@@ -30,10 +30,7 @@ let user2 = {
     id: "engin",
     username: "engin"
 }
-function enterLobby(_lobbyId, _user) {
-    let lobbyUsers = lobbies.find(x => x.lobbyId = _lobbyId).users
-    lobbyUsers.push(_user);
-}
+
 
 let lobbies = [
     {
@@ -68,8 +65,25 @@ function isOnlyAlphabetic(text) {
 function isSpace(text) {
     return !(/ /i.test(text))
 }
+//even if use in socket func. you need to use here 
+let lobbyId;
+let id;
+
+let containerLobby;
+
+function enterLobby(_lobbyId, _user) {
+    //lobbyId determines lobby name to emit specified lobb(io.connect last row)  
+    lobbyId = _lobbyId
+    
+    let lobbyUsers = lobbies.find(x => x.lobbyId = _lobbyId).users
+    lobbyUsers.push(_user);
+
+    //containerLobby send to lobby info to client  
+    let lobby = lobbies.find(x => x.lobbyId == _lobbyId)
+    containerLobby = lobby
 
 
+}
 
 io.on('connection', socket => {
 
@@ -85,8 +99,7 @@ io.on('connection', socket => {
     }
 
     //*****************Room Join*************** */
-    let lobbyId;
-    let id;
+
 
 
     socket.on('isRoomExist', data => {
@@ -94,40 +107,48 @@ io.on('connection', socket => {
     })
 
 
-    socket.on('createLobby', data => {
-        let username = data.id;
-        console.log(isOnlyAlphabetic(username) + " " + isSpace(username));
+    socket.on('createLobby', (_user, _lobbyId) => {
+        let username = _user.id;
+        lobbyId = _lobbyId;
         if (isOnlyAlphabetic(username) && isSpace(username)) {
-            responseMessage("you create a room",200)
+            enterLobby(_lobbyId, _user);
+            responseMessage("you create a room", 200)
         }
 
-        else{
+        else {
             responseMessage("Username can only contain letters \nUsername can not contain space", 406)
         }
 
-        let user = {
-            id: data.id,
-            username: data.lobbyId
+        let user =
+        {
+            id: _lobbyId,
+            about: "a crazy kid, living on the mars"
         }
         let lobby =
         {
-            lobbyId: data.lobbyId,
+            lobbyId: _lobbyId,
             users: []
         }
         lobby.users.push(user);
+        console.log(lobby);
 
         lobbies.push(lobby);
     })
 
     socket.on("joinLobby", data => {
-        //enterLobby("abc123","supo")
-        isLobbyExist = lobbies.some(x => x.lobbyId == data.lobbyId)
-        if (isLobbyExist) {
-            responseMessage("You going to lobby", 200)
+        let user =
+        {
+            id: data.id,
+            about: "a crazy kid, living on the mars"
+        }
 
+        isLobbyExist = lobbies.some(x => x.lobbyId == data.lobbyId)
+        
+        if (isLobbyExist) {
+            //pushing
+            enterLobby(data.lobbyId, user);
+            responseMessage("You going to lobby", 200)
             socket.emit('response', responseMessage);
-            lobbyId = data.lobbyId
-            enterLobby(data.lobbyId, data.id);
         }
         else {
             responseMessage("lobby doesn`t exist. create lobby first", 405)
@@ -136,8 +157,9 @@ io.on('connection', socket => {
     })
 
     socket.join(lobbyId);
-    let lobbyUsers = lobbies.find(x => x.lobbyId == "abc123")
-    io.to(lobbyId).emit('getUsersInLobby', lobbyUsers);
+
+    io.to(lobbyId).emit('getUsersInLobby', containerLobby);
+
     //***************************************** */
 
 })

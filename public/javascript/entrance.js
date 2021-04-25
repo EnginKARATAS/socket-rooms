@@ -24,8 +24,8 @@ socket.on('response', (responseData) => {
 })
 
 function joinLobby() {
-    let username = document.getElementById("txt_username").value;
-    let lobbyId = document.getElementById("txt_lobby").value;
+    let username = document.getElementById("txt_join_username").value;
+    let lobbyId = document.getElementById("txt_join_lobby").value;
     let data = {
         id: username,
         lobbyId: lobbyId
@@ -33,12 +33,15 @@ function joinLobby() {
     socket.emit('joinLobby', data)
 }
 function createLobby() {
-    let username = document.getElementById("txt_username").value;
-    let lobbyId = document.getElementById("txt_username").value;
+    let username = document.getElementById("txt_create_username").value;
+    let lobbyId = document.getElementById("txt_create_lobby").value;
+    console.log("createloby");
+    console.log(username);
+    console.log(lobbyId);
 
     let user = {
         id: username,
-        lobbyId: lobbyId
+        about: "crazy lobby maker " + username
     }
-    socket.emit('createLobby', user);
+    socket.emit('createLobby', user, lobbyId);
 }
