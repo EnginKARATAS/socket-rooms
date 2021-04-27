@@ -1,9 +1,14 @@
+let serverFunctions = require("./serverfunctions.js");
 const { text } = require('express');
 const express = require('express');
 const app = express(); //listining right now
 const nunjucks = require('nunjucks');
 const port = process.env.PORT || 3000;
 const server = app.listen(port);
+
+let path = __dirname + '\\public';
+let entrance = '\\pages\\entrance\\index.html';
+let lobby = '\\pages\\lobby\\index.html';
 
 app.use(express.static('public'));//client reachs 'public' folder
 app.use(express.json({ limit: "1mb" }));//server allows json and taken data size max 1mb, If this row not exist it will be undifined for request parameter
@@ -18,35 +23,32 @@ nunjucks.configure('public', {
     autoscape: true,
     express: app
 })
-let path = __dirname + '\\public';
-let entrance = '\\pages\\entrance\\index.html';
-let lobby = '\\pages\\lobby\\index.html';
 
 let user1 = {
-    id: "elif",
-    username: "elif",
+    id: "engin",
+    about: "crazi55"
 }
 let user2 = {
-    id: "engin",
-    username: "engin"
+    id: "adad",
+    about: "bb1azd15"
 }
-
 
 let lobbies = [
     {
-        lobbyId: "abc123",
-        users: []
+        lobbyId: "qwe",
+        users: [user1, user2]
     },
     {
-        lobbyId: "efg456",
-        users: []
+        lobbyId: "asd",
+        users: [user1]
+    },
+    {
+        lobbyId: "zxc",
+        users: [user1, user1]
     }
 ];
-// setInterval(heartbeat, 1000);
-// function heartbeat() {
-
-//     io.sockets.emit('heartbeat', lobby);
-// }
+console.log("node server çalıştı");
+console.log(lobbies);
 
 app.get('/', function (req, res) {
     res.render(path + entrance, { bilgi: "selam" });
@@ -57,36 +59,41 @@ app.get('/lobby', function (req, res) {
     res.render(path + lobby, { lobby });
 });
 
-
-function isOnlyAlphabetic(text) {
-    return /^[A-Z]+$/i.test(text)
-}
-//test is my duty //true
-function isSpace(text) {
-    return !(/ /i.test(text))
-}
 //even if use in socket func. you need to use here 
-let lobbyId;
-let id;
-
+let containerLobbyId;
 let containerLobby;
 
+function createLobby(_lobbyId, _user) {
+    containerLobbyId = _lobbyId;
+    let funcin_lobby = {
+        lobbyId: _lobbyId,
+        users: [_user]
+    }
+    //empty lobby push
+    lobbies.push(funcin_lobby);
+    containerLobby = funcin_lobby
+}
+
 function enterLobby(_lobbyId, _user) {
-    //lobbyId determines lobby name to emit specified lobb(io.connect last row)  
-    lobbyId = _lobbyId
-    
-    let lobbyUsers = lobbies.find(x => x.lobbyId = _lobbyId).users
-    lobbyUsers.push(_user);
+    //lobbyId determines lobby name to io.to(lobbyId).emit specified lobby(io.connect last row)  
+    containerLobbyId = _lobbyId;
 
-    //containerLobby send to lobby info to client  
-    let lobby = lobbies.find(x => x.lobbyId == _lobbyId)
-    containerLobby = lobby
+    lobbies.forEach((element, i) => {
+        console.log("-----------");
+        console.log(element.lobbyId);
+        console.log("************");
+        console.log(_lobbyId);
+        if (element.lobbyId === _lobbyId) {
+            element.users.push(_user);
+        }
+    })
 
-
+    //containerLobby send to lobby data to client  
+    let lobby = lobbies.find(x => x.lobbyId == _lobbyId);
+    containerLobby = lobby;
 }
 
 io.on('connection', socket => {
-
 
     //*****************Sent response************** */
     //object, Number
@@ -100,39 +107,22 @@ io.on('connection', socket => {
 
     //*****************Room Join*************** */
 
-
-
-    socket.on('isRoomExist', data => {
-        socket.emit('resRoomExist', data);
-    })
-
-
     socket.on('createLobby', (_user, _lobbyId) => {
-        let username = _user.id;
-        lobbyId = _lobbyId;
-        if (isOnlyAlphabetic(username) && isSpace(username)) {
-            enterLobby(_lobbyId, _user);
-            responseMessage("you create a room", 200)
+        isLobbyExist = lobbies.some(x => x.lobbyId == _lobbyId)
+        if (isLobbyExist) {
+            responseMessage("Lobby exist. Choose diffrent lobby name", 407)
         }
-
         else {
-            responseMessage("Username can only contain letters \nUsername can not contain space", 406)
-        }
+            if (serverFunctions.isOnlyAlphabetic(_user.id) && serverFunctions.isSpace(_user.id)) {
 
-        let user =
-        {
-            id: _lobbyId,
-            about: "a crazy kid, living on the mars"
-        }
-        let lobby =
-        {
-            lobbyId: _lobbyId,
-            users: []
-        }
-        lobby.users.push(user);
-        console.log(lobby);
+                createLobby(_lobbyId,_user)
+                // enterLobby(_lobbyId, _user);
 
-        lobbies.push(lobby);
+                responseMessage("you create a room", 200)
+            }
+            else
+                responseMessage("Username can only contain letters \nUsername can not contain space", 406)
+        }
     })
 
     socket.on("joinLobby", data => {
@@ -143,22 +133,23 @@ io.on('connection', socket => {
         }
 
         isLobbyExist = lobbies.some(x => x.lobbyId == data.lobbyId)
-        
+
         if (isLobbyExist) {
-            //pushing
             enterLobby(data.lobbyId, user);
             responseMessage("You going to lobby", 200)
-            socket.emit('response', responseMessage);
         }
         else {
             responseMessage("lobby doesn`t exist. create lobby first", 405)
         }
 
     })
+    console.log("connection sonu");
+    console.log(lobbies);
 
-    socket.join(lobbyId);
 
-    io.to(lobbyId).emit('getUsersInLobby', containerLobby);
+    socket.join(containerLobbyId);
+
+    io.to(containerLobbyId).emit('getUsersInLobby', containerLobby);
 
     //***************************************** */
 
