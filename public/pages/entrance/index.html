@@ -10,7 +10,6 @@
   <script src="/socket.io/socket.io.js"></script>
 
   <link rel="stylesheet" href="../../css/entrance.css">
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 </head>
 
@@ -20,29 +19,29 @@
     <div class="row justify-content-center align-self-center">
       <div class="row d-flex justify-content-center">
 
-        <div class="col-md-5">
+        <div class="col-md-4">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">@</span>
             </div>
-            <input type="text" class="form-control bg-dark" id="txt_create_username" placeholder="Username"
-              aria-label="Username" aria-describedby="basic-addon1">
+            <input type="text" class="form-control bg-dark" id="txt_create_username" placeholder="Username" aria-label="Username"
+              aria-describedby="basic-addon1">
             <input type="text" class="form-control bg-dark" id="txt_create_lobby" placeholder="Lobby Id">
           </div>
-
+  
           <div class="d-flex justify-content-center">
             <div class="row">
               <input type="button" class="btn btn-dark" id="btn_create" value="Create">
             </div>
-          </div>
+          </div> 
 
         </div>
-        <div class="col-md-7 ">
+        <div class="col-md-8 ">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">@</span>
             </div>
-            <input type="text" class="form-control bg-light" id="txt_join_username" placeholder="Username" aria-label="Username"
+            <input type="text" class="form-control" id="txt_join_username" placeholder="Username" aria-label="Username"
               aria-describedby="basic-addon1">
             <input type="text" class="form-control bg-light" id="txt_join_lobby" placeholder="Lobby Id">
           </div>
@@ -51,9 +50,14 @@
             <div class="row">
               <input type="button" class="btn btn-light" id="btn_join" value="Join">
             </div>
-          </div>
+          </div> 
+
         </div>
+
+       
+ 
       </div>
+ 
     </div>
     <!-- {{bilgi}} -->
   </div>
@@ -63,7 +67,6 @@
 <script>
   var socket = io();
 </script>
-
 <script type="text/javascript" src="../../javascript/entrance.js"></script>
 
 </html>

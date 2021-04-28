@@ -2,6 +2,9 @@ let element = document.getElementById("btn_create").addEventListener('click', cr
 
 let element2 = document.getElementById("btn_join").addEventListener('click', joinLobby)
 
+socket.on('alert', data => { alert(data) })
+let isJoin = false;
+
 socket.on('resJoinLobby', bool => {
     isJoin = bool;
 })
@@ -10,11 +13,11 @@ socket.on('response', (responseData) => {
     console.log(responseData);
     let code = responseData.code;
     let message = responseData.message
-    if (code == 405 || code == 406 || code == 407) {
-        swal(message);
+    if (code == 405 || code == 406) {
+        alert(message);
     }
     else if (code == 200) {
-        swal(message)
+        alert(message)
         window.location.href = "/lobby";
     }
 
