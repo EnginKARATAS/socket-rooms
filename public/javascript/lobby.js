@@ -2,6 +2,7 @@
 let users = []
 let lobbyId = "";
  
+socket.emit('lobbyStart');
 
 var input = document.getElementById("txt_message");
 

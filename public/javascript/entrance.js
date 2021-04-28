@@ -28,7 +28,8 @@ function joinLobby() {
     let lobbyId = document.getElementById("txt_join_lobby").value;
     let data = {
         id: username,
-        lobbyId: lobbyId
+        lobbyId: lobbyId,
+        socketId: ""
     }
     socket.emit('joinLobby', data)
 }
@@ -41,7 +42,8 @@ function createLobby() {
 
     let user = {
         id: username,
-        about: "crazy lobby maker " + username
+        about: "crazy lobby maker " + username,
+        adminSocketId: ""
     }
     socket.emit('createLobby', user, lobbyId);
 }

@@ -95,6 +95,10 @@ function enterLobby(_lobbyId, _user) {
 
 io.on('connection', socket => {
 
+    socket.on('lobbyStart', () => {
+
+    });
+
     //*****************Sent response************** */
     //object, Number
     let responseMessage = function (message, code) {
@@ -115,7 +119,7 @@ io.on('connection', socket => {
         else {
             if (serverFunctions.isOnlyAlphabetic(_user.id) && serverFunctions.isSpace(_user.id)) {
 
-                createLobby(_lobbyId,_user)
+                createLobby(_lobbyId, _user)
                 // enterLobby(_lobbyId, _user);
 
                 responseMessage("you create a room", 200)
@@ -129,7 +133,8 @@ io.on('connection', socket => {
         let user =
         {
             id: data.id,
-            about: "a crazy kid, living on the mars"
+            about: "a crazy kid, living on the mars",
+            socketId: socket.id.substring(1,7)
         }
 
         isLobbyExist = lobbies.some(x => x.lobbyId == data.lobbyId)
