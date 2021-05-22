@@ -2,12 +2,8 @@ let element = document.getElementById("btn_create").addEventListener('click', cr
 
 let element2 = document.getElementById("btn_join").addEventListener('click', joinLobby)
 
-socket.on('alert', data => { alert(data) })
-let isJoin = false;
-
-socket.on('resJoinLobby', bool => {
-    isJoin = bool;
-})
+ 
+ 
 
 socket.on('response', (responseData) => {
     console.log(responseData);
@@ -20,7 +16,6 @@ socket.on('response', (responseData) => {
         alert(message)
         window.location.href = "/lobby";
     }
-
 })
 
 function joinLobby() {

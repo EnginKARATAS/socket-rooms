@@ -1,8 +1,7 @@
 
 let users = []
 let lobbyId = "";
- 
-socket.emit('lobbyStart');
+
 
 var input = document.getElementById("txt_message");
 
@@ -13,6 +12,50 @@ input.addEventListener("keyup", function (event) {
     }
 });
 
+
+
+socket.on('response', (responseData) => {
+    console.log(responseData);
+    let code = responseData.code;
+    let message = responseData.message
+    if (code == 200) {
+        alert(message)
+    }
+})
+
+socket.on("user:left", _socketId => {
+   
+    let waitSocketId = new Promise((basarili, basarisiz) => {
+        let sonuc = function loop() {
+            for (let i = 0; i < users.length; i++) {
+                console.log(users[i].socketId, " eşit mi ", _socketId);
+                if (users[i].socketId == _socketId) {
+                    console.log("girdi");
+                    console.log(i);
+                    users.splice(i, 1);
+                    console.log("doğru döndüğünü idda ediyor");
+                    console.log(users[i].socketId, " -- " , _socketId);
+                    return true
+                }
+            }
+        }
+        if (sonuc) {
+            basarili("for looped")
+        }
+        else
+            basarisiz("hey wait")
+    });
+    waitSocketId
+        .then(cevap => {
+            console.log(cevap);
+            console.log("then worked");
+            parseHTML();
+        })
+        .catch(cevap => console.log("döndüremedim"))
+
+});
+
+
 socket.on('getUsersInLobby', data => {
     console.log(data);
     users = data.users;
@@ -22,15 +65,16 @@ socket.on('getUsersInLobby', data => {
 
 function parseHTML() {
     let c = document.getElementById("user_table");
+    c.innerHTML = "";
+
     let dom_lobbyId = document.getElementById("lobbyId");
     dom_lobbyId.innerText = lobbyId;
-    c.innerHTML = "";
     users.forEach((element, i) => {
         //create null elements
         let newtrelement = document.createElement("tr");
-            let newtrlielement1 = document.createElement("td");
-            let newtrlielement2 = document.createElement("td");
-            let newtrlielement3 = document.createElement("td");
+        let newtrlielement1 = document.createElement("td");
+        let newtrlielement2 = document.createElement("td");
+        let newtrlielement3 = document.createElement("td");
         //newtrelement>newtrlielement4
         newtrelement.appendChild(newtrlielement1)
         newtrelement.appendChild(newtrlielement2)

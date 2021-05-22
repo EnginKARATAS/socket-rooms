@@ -5,13 +5,32 @@ const app = express(); //listining right now
 const nunjucks = require('nunjucks');
 const port = process.env.PORT || 3000;
 const server = app.listen(port);
+var Datastore = require('nedb'), db = new Datastore({ filename: 'lobbyDb', autoload: true });
 
 let path = __dirname + '\\public';
 let entrance = '\\pages\\entrance\\index.html';
 let lobby = '\\pages\\lobby\\index.html';
 
 app.use(express.static('public'));//client reachs 'public' folder
-app.use(express.json({ limit: "1mb" }));//server allows json and taken data size max 1mb, If this row not exist it will be undifined for request parameter
+app.use(express.json({ limit: "1mb" })); //server allows json and taken data size max 1mb, If this row not exist it will be undifined for request parameter
+
+
+var doc = { hello: 'world'
+               , n: 5
+               , today: new Date()
+               , nedbIsAwesome: true
+               , notthere: null
+               , notToBeSaved: undefined  // Will not be saved
+               , fruits: [ 'apple', 'orange', 'pear' ]
+               , infos: { name: 'nedb' }
+               };
+
+db.insert(doc, function (err, newDoc) {   // Callback is optional
+  // newDoc is the newly inserted document, including its _id
+  // newDoc has no key called notToBeSaved since its value was undefined
+});
+
+
 
 // Start socket.io
 let socket = require('socket.io');
@@ -26,11 +45,14 @@ nunjucks.configure('public', {
 
 let user1 = {
     id: "engin",
-    about: "crazi55"
+    about: "crazi55",
+    socketId: "bos"
 }
+
 let user2 = {
     id: "adad",
-    about: "bb1azd15"
+    about: "bb1azd15",
+    adminSocketId: "adminBos"
 }
 
 let lobbies = [
@@ -47,6 +69,7 @@ let lobbies = [
         users: [user1, user1]
     }
 ];
+
 console.log("node server çalıştı");
 console.log(lobbies);
 
@@ -95,7 +118,9 @@ function enterLobby(_lobbyId, _user) {
 
 io.on('connection', socket => {
 
-    socket.on('lobbyStart', () => {
+    socket.on('disconnect', () => {
+        //🙀😳😯 io.emit 
+        io.emit('user:left', socket.id.substring(1, 7));
 
     });
 
@@ -134,7 +159,7 @@ io.on('connection', socket => {
         {
             id: data.id,
             about: "a crazy kid, living on the mars",
-            socketId: socket.id.substring(1,7)
+            socketId: socket.id.substring(1, 7)
         }
 
         isLobbyExist = lobbies.some(x => x.lobbyId == data.lobbyId)
@@ -151,11 +176,9 @@ io.on('connection', socket => {
     console.log("connection sonu");
     console.log(lobbies);
 
-
     socket.join(containerLobbyId);
 
     io.to(containerLobbyId).emit('getUsersInLobby', containerLobby);
-
     //***************************************** */
 
 })
