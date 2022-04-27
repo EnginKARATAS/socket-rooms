@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <h1>hellooo</h1>
+    <script src="//cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
+    <script>
+      const db = new PouchDB("usersapp");
+
+      doc = {
+        _id: "bozok",
+        title: "Bozok Universitesi",
+        lecture: "Mobil programlama dersi",
+        teacher: "Tolga Hayıt",
+        date: "18.04  .2021",
+        version: "1.0.0",
+      };
+
+      db.put(doc)
+        .then((res) => {
+          console.log("Document inserted OK");
+          console.log("res: ", res);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+
+      db.get("bozok")
+        .then(function (doc) {
+          console.log("🚀 ~ file: puch.html ~ line 34 ~ doc", doc);
+          // handle doc
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+
+      db.info().then((info) => {
+        console.log(info);
+      });
+    </script>
+    <script src="./insert_doc.js"></script>
+  </body>
+</html>

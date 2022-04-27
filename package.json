@@ -27,6 +27,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "nunjucks": "^3.2.3",
+    "pouchdb-node": "^7.3.0",
     "socketio": "^1.0.0"
   }
 }
